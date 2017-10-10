@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # jrg-resumer
 
 > A Vue.js project
@@ -24,7 +23,7 @@ npm run unit
 # run all tests
 npm test
 ```
-
+# previewAddress https://candy252324.github.io/jrgResumer/dist/#/
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 =======
 # jrgResumer
