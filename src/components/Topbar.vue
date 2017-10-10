@@ -1,0 +1,32 @@
+<template>
+	<div id="topbar">
+		<div class="wrapper">
+			<span class="logo">resumer</span>
+		</div>
+	</div>
+
+</template>
+<script>
+	export default{
+		name:"topBar",
+
+	}
+</script>
+
+<style>
+	#topbar{
+		background: #fff;
+		box-shadow: 0 1px 3px 0 rgba(0,0,0,.25);
+		height: 64px;
+	}
+	#topbar>.wrapper{
+		min-width: 1024px;
+		max-width: 1440px;
+		margin:0 auto;
+		padding:0 16px;
+	}
+	#topbar .logo{
+		font-size: 24px;
+		color:#000;
+	}
+</style>
