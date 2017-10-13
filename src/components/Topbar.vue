@@ -84,10 +84,6 @@
 				color:white;
 			}
 		}
-		.actions > a{
-
-		 }
-
 	}
 	
 </style>
