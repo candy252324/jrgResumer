@@ -1,12 +1,14 @@
 <template>
-  <div class=page>
-      <header>
-        <Topbar/>
-      </header>
-      <main>
-        <ResumeEditor/>
-        <ResumePreview/>
-      </main>
+  <div>
+    <div class=page>
+        <header>
+          <Topbar/>
+        </header>
+        <main>
+          <ResumeEditor/>
+          <ResumePreview/>
+        </main>
+    </div>
   </div>
 </template>
 
@@ -18,9 +20,11 @@
   import ResumeEditor from './components/ResumeEditor';
   import ResumePreview from './components/ResumePreview';
   import icons from './assets/icons'
+  import store from './store/index'
 
   export default {
     name: 'app',
+    store,  // store 放到 <App /> 上，所以所有组件都可以使用 this.$store 来访问到它
     data: function(){
       return {
        
@@ -34,6 +38,14 @@
       //where：插入位置。包括beforeBegin,beforeEnd,afterBegin,afterEnd。
       //el：用于参照插入位置的html元素对象
       //html：要插入的html代码
+
+      //读取缓存数据
+      let state = localStorage.getItem('state')
+      if(state){
+        state = JSON.parse(state) 
+      }
+      // 拿到缓存数据后，需commit给store页面上才会更新
+      this.$store.commit('initState', state)
 
     }
   }
@@ -64,7 +76,7 @@
  
 
   #resumeEditor{
-    width:35%;  
+    min-width:35%;  //使用width：35%的话，若preview区域内容过多，样式会错乱，因为preview设置了flex-grow: 1
     background: #444;
   }
   #resumePreview{

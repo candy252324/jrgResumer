@@ -16,17 +16,22 @@
 				v-show="item.field===selected">
 				<!-- resume 属性同时支持数组和对象 -->
 				<div v-if="resume[item.field] instanceof Array">
-					<div class="subitem" v-for="subitem in resume[item.field]">
+					<div class="subitem" v-for="(subitem,i) in resume[item.field]">
 						<div class="resumeField" v-for="(value,key) in subitem">
 							<label for="">{{key}}</label>
-							<input type="text" v-model="resume[item.field][key]">
+							<!-- <input type="text" v-model="subitem[key]"> -->
+							<!-- <input type="text" :value=value @input="changeResumeField2( item.field, i, key, $event.target.value)"> -->
+							<input type="text" :value="value" @input="changeResumeField(`${item.field}.${i}.${key}`, $event.target.value)">
 						</div>
 						<hr>
 					</div>
 				</div>
 				<div v-else class="resumeField" v-for="(value,key) in resume[item.field]">
 		            <label> {{key}} </label>
-		            <input type="text" v-model="resume[item.field][key]">
+		            <!-- v-model 不允许使用，因为这是双向绑定语法 -->
+		            <!-- <input type="text" v-model="resume[item.field][key]"> -->
+		            <!-- <input type="text" :value="value" @input="changeResumeField1(item.field, key, $event.target.value)"> -->
+		            <input type="text" :value="value" @input="changeResumeField(`${item.field}.${key}`, $event.target.value)">
 		        </div>
 			</li>
 		</ol>
@@ -36,35 +41,51 @@
 <script>
 	export default{
 		name:"ResumeEditor",
-		data(){
-			return{
-				selected:"profile",
-				resume:{
-					config:[
-						{ field: 'profile', icon: 'id' },
-                        { field: 'work history', icon: 'work' },
-                        { field: 'education', icon: 'book' },
-                        { field: 'projects', icon: 'heart' },
-                        { field: 'awards', icon: 'cup' },
-                        { field: 'contacts', icon: 'phone' },
-					],
-					profile:{
-						name:'',
-						city:'',
-						title:'',
-					},
-					'work history':[
-						{company: 'AL', content: '我的第二份工作是'},
-            			{company: 'TX', content: '我的第一份工作是'},
-					],
-					education:[],
-					projects:[],
-					awards:[],
-					contacts:[],
+		computed:{
+			count(){
+				return this.$store.state.count;
+			},
+			//tab无法切换，因为默认 computed 只能用于读数据，需要使用setter改变store里的selected值
+			// selected(){
+			// 	return this.$store.state.selected;
+			// },
+			selected:{
+				get(){
+					return this.$store.state.selected;
+				},
+				//将新的selected值提交给store,通知其更改selected
+				set(value){
+					return this.$store.commit('switchTab', value);
 				}
+			},
+			resume(){
+				return this.$store.state.resume;
+			}
+		},
+		methods:{
+			// changeResumeField1(field, subfield, value){
+			// 	this.$store.commit('updateResume1',{
+			// 		field,
+			// 		subfield,
+			// 		value
+			// 	})
+			// },
+			// changeResumeField2(field,i, subfield, value){
+
+			// 	this.$store.commit('updateResume2',{
+			// 		field,
+			// 		i,
+			// 		subfield,
+			// 		value
+			// 	})
+			// },
+			changeResumeField(path, value){
+		        this.$store.commit('updateResume',{
+		          	path,
+		           	value
+	            })
 			}
 		}
-
 	}
 </script>
 
