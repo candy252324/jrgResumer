@@ -2,7 +2,7 @@
 	<div id="resumeEditor">
 		<nav>
 			<ol>
-				<li v-for="(item,index) in resume.config"
+				<li v-for="(item,index) in resumeConfig"
 					:class="{active:item.field===selected}"
 					@click="selected=item.field">
 					<svg class="icon">
@@ -12,10 +12,10 @@
 			</ol>
 		</nav>
 		<ol class="panels">
-			<li v-for="item in resume.config"
+			<li v-for="(item,i) in resumeConfig"
 				v-show="item.field===selected">
 				<!-- resume 属性同时支持数组和对象 -->
-				<div v-if="resume[item.field] instanceof Array">
+				<div v-if="item.type === 'array'">
 					<div class="subitem" v-for="(subitem,i) in resume[item.field]">
 						<div class="resumeField" v-for="(value,key) in subitem">
 							<label for="">{{key}}</label>
@@ -23,16 +23,19 @@
 							<!-- <input type="text" :value=value @input="changeResumeField2( item.field, i, key, $event.target.value)"> -->
 							<input type="text" :value="value" @input="changeResumeField(`${item.field}.${i}.${key}`, $event.target.value)">
 						</div>
+						<button class="delItem" @click="delItem(`${item.field}.${i}`)">删除</button>
 						<hr>
 					</div>
+					<div class="addItem" @click="addItem(item.field)">添加</div>
 				</div>
 				<div v-else class="resumeField" v-for="(value,key) in resume[item.field]">
-		            <label> {{key}} </label>
+		            <label> {{key}}</label>
 		            <!-- v-model 不允许使用，因为这是双向绑定语法 -->
 		            <!-- <input type="text" v-model="resume[item.field][key]"> -->
 		            <!-- <input type="text" :value="value" @input="changeResumeField1(item.field, key, $event.target.value)"> -->
 		            <input type="text" :value="value" @input="changeResumeField(`${item.field}.${key}`, $event.target.value)">
 		        </div>
+
 			</li>
 		</ol>
 	</div>
@@ -59,8 +62,12 @@
 				}
 			},
 			resume(){
+				console.log(this.$store.state.resume)
 				return this.$store.state.resume;
-			}
+			},
+			resumeConfig(){
+				return this.$store.state.resumeConfig;
+			},
 		},
 		methods:{
 			// changeResumeField1(field, subfield, value){
@@ -84,7 +91,15 @@
 		          	path,
 		           	value
 	            })
+			},
+			addItem(field){
+				console.log(field)
+				this.$store.commit('addItem',{field})
+			},
+			delItem(path){
+				this.$store.commit('delItem',{path})
 			}
+
 		}
 	}
 </script>
@@ -121,6 +136,35 @@
 			>li{
 				padding:24px;
 			}
+			.addItem{
+				padding:5px;
+				text-align:center;
+				background:#02af5f;
+				opacity:.9;
+				cursor:pointer;
+				color:#fff;
+				border-radius:5px;
+				&:hover{
+					opacity:1;
+				}
+			}
+			.subitem{
+				position:relative;
+				.delItem{
+					position:absolute;
+					right:0;
+					top:0;
+					padding:3px 5px;
+					border-radius:5px;
+					background:#f60;
+					color:#fff;
+					border:0;
+					outline:0;
+					cursor:pointer;
+				}
+			}
+			
+
 
 		}
 		.resumeField{

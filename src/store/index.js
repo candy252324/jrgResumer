@@ -6,64 +6,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-	selected:"profile",
+  	selected:"profile",
     user: {
       	id: '',
       	username: ''
     },
-	resume:{
-		config:[
-			{ field: 'profile', icon: 'id' },
-            { field: 'workHistory', icon: 'work' },
-            { field: 'education', icon: 'book' },
-            { field: 'projects', icon: 'heart' },
-            { field: 'awards', icon: 'cup' },
-            { field: 'contacts', icon: 'phone' },
+		resumeConfig:[
+      { field: 'profile', icon: 'id', keys: ['name','city', 'title', 'birthday']},
+      { field: 'workHistory', icon: 'work', type: 'array', keys: ['company', 'details'] },
+      { field: 'education', icon: 'book',type: 'array',  keys: ['school', 'details'] },
+      { field: 'projects', icon: 'heart',type: 'array',  keys: ['name', 'details']  },
+      { field: 'awards', icon: 'cup' ,type: 'array',  keys: ['name', 'details'] },
+      { field: 'contacts', icon: 'phone' ,type: 'array',  keys: ['contact', 'content'] },
 		],
-		profile:{
-			name: '方某某',
-        	city: '大城市铁岭',
-        	title: '首席装逼师',
-        	birthday: '1990-01-01'
-		},
-		workHistory:[
-			{
-	          company: '鸡飞狗跳公司', 
-	          content: `公司总部设在XXXX区，先后在北京、上海成立分公司。专注于移动XXX领域，主打产品XXXXX，它将资讯、报纸、杂志、图片、微信等众多内容，按照用户意愿聚合到一起，实现深度个性化 定制。
-				我的主要工作如下:
-				1. 完成既定产品需求。
-				2. 修复 bug。`
-	        },
-	        { 
-	        	company: '狗急跳墙责任有限公司', 
-	        	content: `公司总部设在XXXX区，先后在北京、上海成立分公司。专注于移动XXX领域，主打产品XXXXX，它将资讯、报纸、杂志、图片、微信等众多内容，按照用户意愿聚合到一起，实现深度个性化 定制。
-				我的主要工作如下:
-				1. 完成既定产品需求。
-				2. 修复 bug` 
-			},
-		],
-		education:[
-			{ 
-				school: '黄志诚警官大学', 
-				content: '本科' 
-			},
-        	{ 
-        		school: '韩琛古惑仔高中'
-        	},
-		],
-		projects:[
-			{ 
-				name: 'project A', content: '文字' 
-			},
-		],
-		awards: [
-        	{ name: '再来十瓶', content: '连续十次获得「再来一瓶」奖励' },
-        	{ name: '三好学生'},
-        ],
-        contacts: [
-         	{ contact: 'phone', content: '13812345678' },
-     	]
-	}
+  	resume:{}
   },
   mutations: {
     switchTab(state,payload){
@@ -81,12 +37,38 @@ export default new Vuex.Store({
       	localStorage.setItem('state', JSON.stringify(state))
     },
     initState(state, payload){
+        state.resumeConfig.map((item)=>{
+          if(item.type === 'array'){
+            //state.resume[item.field] = [] // 这样写 Vue 无法监听属性变化
+            Vue.set(state.resume, item.field, [])
+          }else{
+            //state.resume[item.field] = {} // 这样写 Vue 无法监听属性变化
+            Vue.set(state.resume, item.field, {})
+            item.keys.map((key)=>{
+              //state.resume[item.field][key] = '' // 这样写 Vue 无法监听属性变化
+              Vue.set(state.resume[item.field], key, '')
+            })
+          }
+        })
+        console.log(state.resume)
     	//state=payload;  //直接赋值state虽然变了，但是不会触发视图更新？
         Object.assign(state, payload)
     },
-     setUser(state, payload){
-      	Object.assign(state.user, payload)
-      	console.log(state.user)
-     }
+    setUser(state, payload){
+    	Object.assign(state.user, payload)
+    },
+    removeUser(state){
+      state.user.id = null;
+    },
+    addItem(state,{field}){
+      let empty = {}
+      state.resume[field].push(empty)
+      state.resumeConfig.filter((i) => i.field === field)[0].keys.map((key) => {
+          Vue.set(empty, key, '')
+      })
+    },
+    delItem(state,{path}){
+      objectPath.del(state.resume, path);
+    },
   }
-})
+})    

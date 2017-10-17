@@ -21,6 +21,8 @@
   import ResumePreview from './components/ResumePreview';
   import icons from './assets/icons'
   import store from './store/index'
+  import AV from './lib/leancloud'
+  import getAVUser from './lib/getAVUser'
 
   export default {
     name: 'app',
@@ -46,7 +48,7 @@
       }
       // 拿到缓存数据后，需commit给store页面上才会更新
       this.$store.commit('initState', state)
-
+      this.$store.commit('setUser', getAVUser())
     }
   }
 </script>

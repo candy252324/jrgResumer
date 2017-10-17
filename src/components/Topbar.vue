@@ -3,39 +3,62 @@
 		<div class="wrapper">
 			<span class="logo">resumer</span>
 			<div class="actions">
-				<span>{{user}}</span>
-		        <!-- title是标签的固有属性，所以不需要 :title="title"的形式传递 -->
-		        <MyDialog title="注册"  
-		        	:visible="signUpDialogVisible" 
-		        	@close="signUpDialogVisible = false">
-		        	<SignUpForm @success="login($event)"/>
-		        </MyDialog>
-		         <a class="button primary" href="#" @click.prevent="signUpDialogVisible = true">注册</a>
-		        <a class="button" href="#">登录</a>
-		        <button class="button primary">保存</button>
-		        <button class="button">预览</button>
+		       
+                <div v-if="logined" class="userActions">
+                   <span class="welcome">你好，{{user.username}}</span>
+                   <a class="button" href="#" @click.prevent="signOut">登出</a>
+                 </div>
+                <div v-else class="userActions">
+                   	<a class="button primary" href="#" @click.prevent="signUpDialogVisible = true">注册</a>
+                    <a class="button" href="#" @click.prevent="signInDialogVisible = true">登录</a>
+                </div>
 			</div>
+
 		</div>
+	  <!-- title是标签的固有属性，所以不需要 :title="title"的形式传递 -->
+       <MyDialog title="注册" :visible="signUpDialogVisible" @close="signUpDialogVisible = false">
+         <SignUpForm @success="signIn($event)"/>
+       </MyDialog>
+		<MyDialog title="登录" :visible="signInDialogVisible"
+            @close="signInDialogVisible = false">
+            <SignInForm @success="signIn($event)"/>
+        </MyDialog>
 	</div>
 
 </template>
 <script>
 	import MyDialog from './MyDialog'
 	import SignUpForm from './SignUpForm'
+	import SignInForm from './SignInForm'
+	import AV from '../lib/leancloud'
 	export default{
 		name:"topBar",
 		data(){
 			return{
-				signUpDialogVisible:"",
-				user:"",
+				signUpDialogVisible: false,
+ 			    signInDialogVisible: false,
+				// user:"",
 			}
 		},
+		computed:{
+			user(){
+	        	return this.$store.state.user
+		     },
+		    logined(){
+		       return this.user.id
+		    }
+		},
 		components:{
-			MyDialog,SignUpForm
+			MyDialog,SignUpForm,SignInForm
 		},
 		methods:{
-		  	login(user){
+		    signOut(){
+		      	AV.User.logOut()
+		      	this.$store.commit('removeUser')
+		    },
+		  	signIn(user){
       			this.signUpDialogVisible = false
+      			this.signInDialogVisible = false
       			this.$store.commit('setUser', user)
     		}
 		}
@@ -61,6 +84,14 @@
 		.logo{
 			font-size: 24px;
 			color:#000;
+		}
+		.actions{
+			 display: flex;
+		     .userActions{
+		       .welcome{
+		        	margin-right: .5em;
+		       }
+		     }
 		}
 		// 由于加了 scoped， 所以这个 button 选择器只在本组件内有效，不会影响其他组件
 		.button{
