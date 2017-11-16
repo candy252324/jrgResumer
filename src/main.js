@@ -11,9 +11,7 @@ import 'element-ui/lib/theme-default/index.css'
 Vue.use(Button)
 Vue.use(Switch)
 
-
 Vue.config.productionTip = false
-
 Vue.config.lang = 'zh'
 
 new Vue({

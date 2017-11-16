@@ -70,7 +70,7 @@
       margin-top: 16px;
       margin-bottom: 16px;
       display: flex;
-      width:100%;   /*不加的话，main虽然居中了，但是宽度变成1024，而非1440*/
+      width:100%;   
       align-self: center;
       justify-content: space-between;
       padding:0 16px;
