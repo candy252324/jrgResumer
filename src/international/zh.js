@@ -1,4 +1,45 @@
 const messagesZh = {
-    hello: '你好、世界'
+    topbar:{
+    	hello:'你好',
+    	regist:"注册",
+    	login:"登陆",
+    	logout:'登出',
+    	title:"简历"
+    },
+    resume:{
+    	add:'添加',
+    	del:'删除',
+    	profile:{
+    		name:'姓名',
+    		city:'居住地',
+    		job:'职位',
+    		birthday:'生日',
+    	},
+    	workHistory:{
+    		title:'工作经历',
+    		company:'公司',
+    		details:'详情',
+    	},
+    	education:{
+    		title:'教育经历',
+    		school:'学校',
+    		details:'详情',
+    	},
+    	projects:{
+    		title:'项目经验',
+    		name:'项目',
+    		details:'详情',
+    	},
+    	awards:{
+    		title:'获奖情况',
+    		name:'奖项',
+    		details:'详情',
+    	},
+    	contacts:{
+    		title:'联系方式',
+    		contact:'联系方式',
+    		content:'详情',
+    	},
+    },
 }
 export default messagesZh

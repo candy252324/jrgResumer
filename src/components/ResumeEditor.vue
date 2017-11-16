@@ -18,18 +18,18 @@
 				<div v-if="item.type === 'array'">
 					<div class="subitem" v-for="(subitem,i) in resume[item.field]">
 						<div class="resumeField" v-for="(value,key) in subitem">
-							<label for="">{{key}}</label>
+							<label for="">{{$t(`resume.${item.field}.${key}`)}}</label>
 							<!-- <input type="text" v-model="subitem[key]"> -->
 							<!-- <input type="text" :value=value @input="changeResumeField2( item.field, i, key, $event.target.value)"> -->
 							<input type="text" :value="value" @input="changeResumeField(`${item.field}.${i}.${key}`, $event.target.value)">
 						</div>
-						<button class="delItem" @click="delItem(`${item.field}.${i}`)">删除</button>
+						<el-button type="danger" class="delItem" @click="delItem(`${item.field}.${i}`)">{{$t(`resume.del`)}}</el-button>
 						<hr>
 					</div>
-					<div class="addItem" @click="addItem(item.field)">添加</div>
+					<el-button type="success" class="addItem" @click="addItem(item.field)">{{$t(`resume.add`)}}</el-button>
 				</div>
 				<div v-else class="resumeField" v-for="(value,key) in resume[item.field]">
-		            <label> {{key}}</label>
+		            <label> {{$t(`resume.${item.field}.${key}`)}}</label>
 		            <!-- v-model 不允许使用，因为这是双向绑定语法 -->
 		            <!-- <input type="text" v-model="resume[item.field][key]"> -->
 		            <!-- <input type="text" :value="value" @input="changeResumeField1(item.field, key, $event.target.value)"> -->
@@ -62,7 +62,6 @@
 				}
 			},
 			resume(){
-				console.log(this.$store.state.resume)
 				return this.$store.state.resume;
 			},
 			resumeConfig(){
@@ -93,7 +92,6 @@
 	            })
 			},
 			addItem(field){
-				console.log(field)
 				this.$store.commit('addItem',{field})
 			},
 			delItem(path){
@@ -137,16 +135,8 @@
 				padding:24px;
 			}
 			.addItem{
-				padding:5px;
+				width:100%;
 				text-align:center;
-				background:#02af5f;
-				opacity:.9;
-				cursor:pointer;
-				color:#fff;
-				border-radius:5px;
-				&:hover{
-					opacity:1;
-				}
 			}
 			.subitem{
 				position:relative;
@@ -155,12 +145,6 @@
 					right:0;
 					top:0;
 					padding:3px 5px;
-					border-radius:5px;
-					background:#f60;
-					color:#fff;
-					border:0;
-					outline:0;
-					cursor:pointer;
 				}
 			}
 			

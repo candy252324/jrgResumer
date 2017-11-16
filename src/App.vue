@@ -15,7 +15,7 @@
 <script>
 
   import './assets/reset.css';
-  // import 'normalize.css/normalize.css';
+  import 'normalize.css/normalize.css';
   import Topbar from './components/Topbar';
   import ResumeEditor from './components/ResumeEditor';
   import ResumePreview from './components/ResumePreview';
@@ -23,8 +23,9 @@
   import store from './store/index'
   import AV from './lib/leancloud'
   import getAVUser from './lib/getAVUser'
-
+ 
   export default {
+
     name: 'app',
     store,  // store 放到 <App /> 上，所以所有组件都可以使用 this.$store 来访问到它
     data: function(){
@@ -49,7 +50,7 @@
       // 拿到缓存数据后，需commit给store页面上才会更新
       this.$store.commit('initState', state)
       this.$store.commit('setUser', getAVUser())
-    }
+    },
   }
 </script>
 

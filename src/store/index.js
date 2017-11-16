@@ -12,7 +12,7 @@ export default new Vuex.Store({
       	username: ''
     },
 		resumeConfig:[
-      { field: 'profile', icon: 'id', keys: ['name','city', 'title', 'birthday']},
+      { field: 'profile', icon: 'id', keys: ['name','city', 'job', 'birthday']},
       { field: 'workHistory', icon: 'work', type: 'array', keys: ['company', 'details'] },
       { field: 'education', icon: 'book',type: 'array',  keys: ['school', 'details'] },
       { field: 'projects', icon: 'heart',type: 'array',  keys: ['name', 'details']  },
@@ -50,7 +50,6 @@ export default new Vuex.Store({
             })
           }
         })
-        console.log(state.resume)
     	//state=payload;  //直接赋值state虽然变了，但是不会触发视图更新？
         Object.assign(state, payload)
     },

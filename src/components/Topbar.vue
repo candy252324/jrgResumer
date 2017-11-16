@@ -1,17 +1,25 @@
 <template>
 	<div id="topbar">
 		<div class="wrapper">
-			<span class="logo">resumer</span>
+			<span class="logo">{{$t(`topbar.title`)}}</span>
 			<div class="actions">
 		       
                 <div v-if="logined" class="userActions">
-                   <span class="welcome">你好，{{user.username}}</span>
-                   <a class="button" href="#" @click.prevent="signOut">登出</a>
+                   <span class="welcome">{{$t(`topbar.hello`)}}，{{user.username}}</span>
+                   <a class="button" href="#" @click.prevent="signOut">{{$t(`topbar.logout`)}}</a>
                  </div>
                 <div v-else class="userActions">
-                   	<a class="button primary" href="#" @click.prevent="signUpDialogVisible = true">注册</a>
-                    <a class="button" href="#" @click.prevent="signInDialogVisible = true">登录</a>
+                   	<el-button type="primary"  href="#" @click.prevent="signUpDialogVisible = true">{{$t(`topbar.regist`)}}</el-button>
+                    <el-button class="button" href="#" @click.prevent="signInDialogVisible = true">{{$t(`topbar.login`)}}</el-button>
                 </div>
+                <el-switch
+				  v-model="lang"
+				  on-value="zh"
+				  off-value="en"
+				  on-text="中文"
+				  off-text="英文"
+				  off-color="#13ce66">
+				</el-switch>
 			</div>
 
 		</div>
@@ -27,6 +35,7 @@
 
 </template>
 <script>
+	import Vue from 'vue'
 	import MyDialog from './MyDialog'
 	import SignUpForm from './SignUpForm'
 	import SignInForm from './SignInForm'
@@ -37,7 +46,7 @@
 			return{
 				signUpDialogVisible: false,
  			    signInDialogVisible: false,
-				// user:"",
+ 			    lang:"zh",
 			}
 		},
 		computed:{
@@ -61,9 +70,12 @@
       			this.signInDialogVisible = false
       			this.$store.commit('setUser', user)
     		}
+		},
+		watch:{
+			'lang'(val){
+				Vue.config.lang=val;
+			}
 		}
-
-
 	}
 </script>
 
@@ -87,33 +99,17 @@
 		}
 		.actions{
 			 display: flex;
+			 align-items:center;
 		     .userActions{
 		       .welcome{
 		        	margin-right: .5em;
 		       }
+		       button{
+		       		padding:6px 12px;
+		       		margin-left:0;
+		       		margin-right:10px;
+		       }
 		     }
-		}
-		// 由于加了 scoped， 所以这个 button 选择器只在本组件内有效，不会影响其他组件
-		.button{
-			width:72px;
-			height:32px;
-			border:none;
-			cursor:pointer;
-			font-size:18px;
-			background:#ddd;
-			color:#222;
-			text-decoration: none;
-   			display: inline-flex;
-    		justify-content: center;
-    		align-items: center;
-	    	vertical-align: middle;
-			&:hover{
-				box-shadow:1px 1px 1px hsla(0,0,0,.5);
-			}
-			&.primary{
-				background:#02af5f;
-				color:white;
-			}
 		}
 	}
 	

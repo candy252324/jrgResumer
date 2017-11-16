@@ -1,4 +1,45 @@
 const messagesEn = {
-    hello: 'Hello world'
+    topbar:{
+    	hello:'hello',
+    	regist:"regist",
+    	login:"login",
+    	logout:'logout',
+    	title:"resume"
+    },
+    resume:{
+    	add:'add',
+    	del:'delete',
+    	profile:{
+    		name:'name',
+    		city:'city',
+    		job:'job',
+    		birthday:'birthday',
+    	},
+    	workHistory:{
+    		title:'Work experience',
+    		company:'company',
+    		details:'details',
+    	},
+    	education:{
+    		title:'Educations',
+    		school:'school',
+    		details:'details',
+    	},
+    	projects:{
+    		title:'Projects',
+    		name:'project',
+    		details:'details',
+    	},
+    	awards:{
+    		title:'Awards',
+    		name:'award',
+    		details:'details',
+    	},
+    	contacts:{
+    		title:'Contacts',
+    		contact:'contact',
+    		content:'content',
+    	},
+    },
 }
 export default messagesEn
